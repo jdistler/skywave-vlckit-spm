@@ -7,7 +7,7 @@ import PackageDescription
 let vlcBinary = Target.binaryTarget(
     name: "VLCKit",
     url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-2/VLCKit.xcframework.zip",
-    checksum: "2906790bda08a601e000fe730aa7f00c8169a8b11ddf0bf48347ada3b16bc6d3"
+    checksum: "165931ba471c5c060309eb4963eb00fd8f8383cff0b12f4ae8a4bbdb238761e6"
 )
 
 let package = Package(
