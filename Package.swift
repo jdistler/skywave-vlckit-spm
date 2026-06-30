@@ -6,8 +6,8 @@ import PackageDescription
 // fix the iOS segmented-HLS audio flush-loop freeze. URL + checksum track that repo's release.
 let vlcBinary = Target.binaryTarget(
     name: "VLCKit",
-    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-1/VLCKit.xcframework.zip",
-    checksum: "06dcc521acfe2bf2d32c24d0463f229d16de78e7334b1d14946ed63c29bf34e6"
+    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-2/VLCKit.xcframework.zip",
+    checksum: "2906790bda08a601e000fe730aa7f00c8169a8b11ddf0bf48347ada3b16bc6d3"
 )
 
 let package = Package(
