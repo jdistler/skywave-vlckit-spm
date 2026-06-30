@@ -3,13 +3,14 @@ import PackageDescription
 
 // Skywave fork: VLCKit built from jdistler/skywave-vlckit, which carries extra libVLC
 // patches: 0013 exposes :audio-resync-tolerance / :audio-late-tolerance (fixes the iOS
-// segmented-HLS audio flush-loop freeze); 0014 adds :adaptive-ts-keep-raw to ignore the
-// inconsistent per-segment Apple ID3 timestamp mapping that flips the HLS timeline between
-// two bases and freezes playback. URL + checksum track that repo's release.
+// segmented-HLS audio flush-loop freeze); 0014 adds :adaptive-ts-keep-raw; 0015 adds
+// :adaptive-ts-force-playlist — forces ONE monotonic timeline across the segments'
+// inconsistent per-segment PTS (shared offset re-anchored on any jump, applied to every ES
+// + PCR) so segment-boundary backward jumps can't stall the clock. URL + checksum track the release.
 let vlcBinary = Target.binaryTarget(
     name: "VLCKit",
-    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-5/VLCKit.xcframework.zip",
-    checksum: "3ffc59274b636bc555a6c3fb58584d22854ea33071238de05ba91f24740ba743"
+    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-7/VLCKit.xcframework.zip",
+    checksum: "daaea6f454a224e3189c35d05d84205efabd0f405316eca4575faa5b9c5f7932"
 )
 
 let package = Package(
