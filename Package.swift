@@ -8,8 +8,8 @@ import PackageDescription
 // two bases and freezes playback. URL + checksum track that repo's release.
 let vlcBinary = Target.binaryTarget(
     name: "VLCKit",
-    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-3/VLCKit.xcframework.zip",
-    checksum: "76f804f8e4cec6c570a5d636e3201981ae79d2330d3167839f87ed407650f56a"
+    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-5/VLCKit.xcframework.zip",
+    checksum: "3ffc59274b636bc555a6c3fb58584d22854ea33071238de05ba91f24740ba743"
 )
 
 let package = Package(
