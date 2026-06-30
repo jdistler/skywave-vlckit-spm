@@ -9,8 +9,8 @@ import PackageDescription
 // + PCR) so segment-boundary backward jumps can't stall the clock. URL + checksum track the release.
 let vlcBinary = Target.binaryTarget(
     name: "VLCKit",
-    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-7/VLCKit.xcframework.zip",
-    checksum: "daaea6f454a224e3189c35d05d84205efabd0f405316eca4575faa5b9c5f7932"
+    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-8/VLCKit.xcframework.zip",
+    checksum: "e3a9ba4f1911e5aebc4cf9e0862ad695da82b470b526536b156d9f6bf9f9ce77"
 )
 
 let package = Package(
