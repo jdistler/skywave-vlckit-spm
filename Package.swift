@@ -6,11 +6,13 @@ import PackageDescription
 // segmented-HLS audio flush-loop freeze); 0014 adds :adaptive-ts-keep-raw; 0015 adds
 // :adaptive-ts-force-playlist — forces ONE monotonic timeline across the segments'
 // inconsistent per-segment PTS (shared offset re-anchored on any jump, applied to every ES
-// + PCR) so segment-boundary backward jumps can't stall the clock. URL + checksum track the release.
+// + PCR) so segment-boundary backward jumps can't stall the clock; 0016 survives broken-panel
+// HLS media-sequence anomalies (forward gaps used to assert(duration)+abort, backward resets
+// used to stall the playlist forever). URL + checksum track the release.
 let vlcBinary = Target.binaryTarget(
     name: "VLCKit",
-    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-9/VLCKit.xcframework.zip",
-    checksum: "9a59f8e988653f25a50d1c2c03dedb67525382d4ed97e38d9ed038e69361daf6"
+    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-10/VLCKit.xcframework.zip",
+    checksum: "592effd21039694dab46682f6c8ee173af38ba0c3d57c6cbb805226bba9e4e2e"
 )
 
 let package = Package(
