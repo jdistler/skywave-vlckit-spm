@@ -8,11 +8,13 @@ import PackageDescription
 // inconsistent per-segment PTS (shared offset re-anchored on any jump, applied to every ES
 // + PCR) so segment-boundary backward jumps can't stall the clock; 0016 survives broken-panel
 // HLS media-sequence anomalies (forward gaps used to assert(duration)+abort, backward resets
-// used to stall the playlist forever). URL + checksum track the release.
+// used to stall the playlist forever); 0017 makes the aout late-flush queue-aware (a
+// transient late drift against a deep queued buffer no longer dumps the whole queue into
+// seconds of silence — only true starvation flushes). URL + checksum track the release.
 let vlcBinary = Target.binaryTarget(
     name: "VLCKit",
-    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-10/VLCKit.xcframework.zip",
-    checksum: "592effd21039694dab46682f6c8ee173af38ba0c3d57c6cbb805226bba9e4e2e"
+    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-11/VLCKit.xcframework.zip",
+    checksum: "a5eee35789c5a029a1d9e2b37d030301c9c6c7b7126a99c9dd812b46fa3ea627"
 )
 
 let package = Package(
