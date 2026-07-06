@@ -10,11 +10,13 @@ import PackageDescription
 // HLS media-sequence anomalies (forward gaps used to assert(duration)+abort, backward resets
 // used to stall the playlist forever); 0017 makes the aout late-flush queue-aware (a
 // transient late drift against a deep queued buffer no longer dumps the whole queue into
-// seconds of silence — only true starvation flushes). URL + checksum track the release.
+// seconds of silence — only true starvation flushes); 0018 anchors the avsamplebuffer start at the intended
+// host time (setRate:time:atHostTime:), killing the constant ~160ms audio-late startup
+// drift / 15-20s lip-sync slew after every open. URL + checksum track the release.
 let vlcBinary = Target.binaryTarget(
     name: "VLCKit",
-    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-11/VLCKit.xcframework.zip",
-    checksum: "a5eee35789c5a029a1d9e2b37d030301c9c6c7b7126a99c9dd812b46fa3ea627"
+    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-12/VLCKit.xcframework.zip",
+    checksum: "c973e914e6f2b4f8ddd602e884cb9abe11a1979fbcf360591ca4206720e63c14"
 )
 
 let package = Package(
