@@ -12,11 +12,14 @@ import PackageDescription
 // transient late drift against a deep queued buffer no longer dumps the whole queue into
 // seconds of silence — only true starvation flushes); 0018 anchors the avsamplebuffer start at the intended
 // host time (setRate:time:atHostTime:), killing the constant ~160ms audio-late startup
-// drift / 15-20s lip-sync slew after every open. URL + checksum track the release.
+// drift / 15-20s lip-sync slew after every open; 0019 fixes 0018's anchor gate (deadline
+// is always us-past after the timedwait — anchor up to 1s past) and warns on multi-second
+// start gaps (route-change lost-queue, AirPods in/out) so the app can reconnect instead of
+// sitting silent for queue-depth seconds. URL + checksum track the release.
 let vlcBinary = Target.binaryTarget(
     name: "VLCKit",
-    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-12/VLCKit.xcframework.zip",
-    checksum: "c973e914e6f2b4f8ddd602e884cb9abe11a1979fbcf360591ca4206720e63c14"
+    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-13/VLCKit.xcframework.zip",
+    checksum: "60d7ff57396caa81aae03d510e33efa8bc3b5c8708e1530f4fa165e30d4a0cde"
 )
 
 let package = Package(
