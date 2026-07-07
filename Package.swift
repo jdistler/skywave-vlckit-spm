@@ -15,11 +15,15 @@ import PackageDescription
 // drift / 15-20s lip-sync slew after every open; 0019 fixes 0018's anchor gate (deadline
 // is always us-past after the timedwait — anchor up to 1s past) and warns on multi-second
 // start gaps (route-change lost-queue, AirPods in/out) so the app can reconnect instead of
-// sitting silent for queue-depth seconds. URL + checksum track the release.
+// sitting silent for queue-depth seconds; 0020 survives garbage NEGATIVE
+// EXT-X-MEDIA-SEQUENCE values ("-1"/"-3" wrap near UINT64_MAX through the unsigned parse —
+// used to instant-EOF when heading the list, or abort in updateWith's prune-all path via
+// assert(segments.empty()) on PDT playlists: the 2026-07-06 on-device mid-stream SIGABRT).
+// URL + checksum track the release.
 let vlcBinary = Target.binaryTarget(
     name: "VLCKit",
-    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-13/VLCKit.xcframework.zip",
-    checksum: "60d7ff57396caa81aae03d510e33efa8bc3b5c8708e1530f4fa165e30d4a0cde"
+    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-14/VLCKit.xcframework.zip",
+    checksum: "5e51962a01b5bd8f2b0f113538cab7e731a492a76d5005bdb969ba15fe879a5e"
 )
 
 let package = Package(
