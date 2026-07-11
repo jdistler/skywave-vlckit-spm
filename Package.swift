@@ -23,15 +23,17 @@ import PackageDescription
 // a stream whose source has a systematic audio-video PTS offset — same "start deferred"
 // magnitude (~36s on MLB Network via fullent) but opposite fix, so a distinct log message
 // ("skywave-avsb: initial start skew N ms") lets the app skip the reconnect that only
-// thrashes stream-property offsets. 0022 fixes the same class of desync at the DEMUX layer
-// (not aout): detects the first video-audio PES PTS diff in EITHER es_out.c (raw TS) OR
-// FakeESOut (adaptive HLS) and applies i_audio_delay / an inline PTS shift to compensate,
-// so MLB Network plays synced from open — no 36s silent-video wait, no user notice.
+// thrashes stream-property offsets. 0022 detects the panel-side +36s audio-ahead labelling
+// at the DEMUX layer (both raw TS via es_out.c AND adaptive HLS via FakeESOut). On TS it
+// also passes the offset via EsOutSetDelay(-diff) as a drift-correction hint (stops the
+// resampler from speeding audio up to catch imaginary lateness — the actual desync fix on
+// the tape-delayed MLB feed). Both sites fire "skywave-avdiff" so the app's overlay
+// (AudioCatchingUpOverlay) mounts on both transports.
 // URL + checksum track the release.
 let vlcBinary = Target.binaryTarget(
     name: "VLCKit",
-    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-16/VLCKit.xcframework.zip",
-    checksum: "8595d3c8a9a85cbcd23f22598b3c2f1409748738d6f0496fee1c3b2770ebb4b6"
+    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-17/VLCKit.xcframework.zip",
+    checksum: "d65ef28e9cf1504036ef377415622191a6b9196aa9417340aa416e00a47acf78"
 )
 
 let package = Package(
