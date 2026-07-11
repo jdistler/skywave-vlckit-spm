@@ -23,12 +23,15 @@ import PackageDescription
 // a stream whose source has a systematic audio-video PTS offset — same "start deferred"
 // magnitude (~36s on MLB Network via fullent) but opposite fix, so a distinct log message
 // ("skywave-avsb: initial start skew N ms") lets the app skip the reconnect that only
-// thrashes stream-property offsets.
+// thrashes stream-property offsets. 0022 fixes the same class of desync at the DEMUX layer
+// (not aout): detects the first video-audio PES PTS diff in EITHER es_out.c (raw TS) OR
+// FakeESOut (adaptive HLS) and applies i_audio_delay / an inline PTS shift to compensate,
+// so MLB Network plays synced from open — no 36s silent-video wait, no user notice.
 // URL + checksum track the release.
 let vlcBinary = Target.binaryTarget(
     name: "VLCKit",
-    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-15/VLCKit.xcframework.zip",
-    checksum: "162cff08c1172fbd6acd9f8b6c7c3761f1a4179d2e6aa9615ff066ee80159e9c"
+    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-16/VLCKit.xcframework.zip",
+    checksum: "8595d3c8a9a85cbcd23f22598b3c2f1409748738d6f0496fee1c3b2770ebb4b6"
 )
 
 let package = Package(
