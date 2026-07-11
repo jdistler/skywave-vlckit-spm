@@ -18,12 +18,17 @@ import PackageDescription
 // sitting silent for queue-depth seconds; 0020 survives garbage NEGATIVE
 // EXT-X-MEDIA-SEQUENCE values ("-1"/"-3" wrap near UINT64_MAX through the unsigned parse —
 // used to instant-EOF when heading the list, or abort in updateWith's prune-all path via
-// assert(segments.empty()) on PDT playlists: the 2026-07-06 on-device mid-stream SIGABRT).
+// assert(segments.empty()) on PDT playlists: the 2026-07-06 on-device mid-stream SIGABRT);
+// 0021 differentiates a route-change lost-queue (0019's intended fix) from a fresh open on
+// a stream whose source has a systematic audio-video PTS offset — same "start deferred"
+// magnitude (~36s on MLB Network via fullent) but opposite fix, so a distinct log message
+// ("skywave-avsb: initial start skew N ms") lets the app skip the reconnect that only
+// thrashes stream-property offsets.
 // URL + checksum track the release.
 let vlcBinary = Target.binaryTarget(
     name: "VLCKit",
-    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-14/VLCKit.xcframework.zip",
-    checksum: "5e51962a01b5bd8f2b0f113538cab7e731a492a76d5005bdb969ba15fe879a5e"
+    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-15/VLCKit.xcframework.zip",
+    checksum: "162cff08c1172fbd6acd9f8b6c7c3761f1a4179d2e6aa9615ff066ee80159e9c"
 )
 
 let package = Package(
