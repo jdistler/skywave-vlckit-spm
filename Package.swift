@@ -29,11 +29,19 @@ import PackageDescription
 // resampler from speeding audio up to catch imaginary lateness — the actual desync fix on
 // the tape-delayed MLB feed). Both sites fire "skywave-avdiff" so the app's overlay
 // (AudioCatchingUpOverlay) mounts on both transports.
+// 0023 rejects a spliced outlier PCR at the input clock: some Xtream restream transcoders
+// splice a stale near-max-33-bit PCR into an ongoing stream (verified strong RC: ECDF
+// 2026-07-12), and VLC's default stream_diff<0 recovery re-anchors on the outlier via
+// SetFirstPcr, permanently freezing the pipeline ('new clock context(1) @95443017689',
+// kVTVideoDecoderBadDataErr). Now: if abs(new_PCR - cl->last.stream) > 10s once
+// b_has_reference is set, drop the sample and keep the running reference; safety valve
+// caps consecutive rejects at 10 so a real clock re-base still re-anchors. Marker line
+// "skywave-stale-pcr:" for VLCLogTap.
 // URL + checksum track the release.
 let vlcBinary = Target.binaryTarget(
     name: "VLCKit",
-    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-18/VLCKit.xcframework.zip",
-    checksum: "f6dd4ac4bbb8b6e1b55b41e18d3311dcb92a6e6f4f1e8db9f393c825a832924f"
+    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-19/VLCKit.xcframework.zip",
+    checksum: "756a0758be59b14149644e8dfe841e166e8a6a2f64f1cf58f038959867660447"
 )
 
 let package = Package(
