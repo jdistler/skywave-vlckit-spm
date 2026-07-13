@@ -36,12 +36,23 @@ import PackageDescription
 // kVTVideoDecoderBadDataErr). Now: if abs(new_PCR - cl->last.stream) > 10s once
 // b_has_reference is set, drop the sample and keep the running reference; safety valve
 // caps consecutive rejects at 10 so a real clock re-base still re-anchors. Marker line
-// "skywave-stale-pcr:" for VLCLogTap.
+// "skywave-stale-pcr:" for VLCLogTap. (Refined to asymmetric bounds: back 10s / fwd 60s.)
+// 0024 caps 0022's avdiff tape-delay compensation to a plausible 3-60s window (fullent loop
+// channels stamp video/audio PES ~105s apart though the content plays together; uncapped 0022
+// set a bogus +105s audio_delay).
+// 0025 drops a garbage 33-bit-max PCR spike at the DEMUX (ts.c PCRHandle), upstream of 0023.
+// The 'side' panel emits ONE spurious PCR at the 33-bit maximum (~95443s) at an encoder
+// restart, then resets PCR+PES to ~0; the spike poisons pcr.i_current (the wrap reference)
+// so the 0-based reset false-detects as a rollover and TimeStampWrapAround unwraps ONLY the
+// PCR to ~95443s+ while the PES stay near 0 — a permanent divergence that froze every side
+// channel 11-23s in. 0023 can't help (poison is in the demux, one layer up). Fix drops the
+// forward outlier before it updates pcr.i_current (streak-valved, forward-only). Marker
+// "skywave-ts-pcr-spike:". Found by the deep panelfuzz campaign 2026-07-13.
 // URL + checksum track the release.
 let vlcBinary = Target.binaryTarget(
     name: "VLCKit",
-    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-20/VLCKit.xcframework.zip",
-    checksum: "4cde78bab9642a9b5397c8e44f074d5adfea6aec1aab8e43572b9f3944b7ce3b"
+    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-21/VLCKit.xcframework.zip",
+    checksum: "6afc32b3a720e46b22fd3dd40cfa92f4fd5b95529046ca1eb9edee28bcf493fa"
 )
 
 let package = Package(
