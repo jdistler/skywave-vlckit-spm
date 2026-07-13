@@ -48,11 +48,22 @@ import PackageDescription
 // channel 11-23s in. 0023 can't help (poison is in the demux, one layer up). Fix drops the
 // forward outlier before it updates pcr.i_current (streak-valved, forward-only). Marker
 // "skywave-ts-pcr-spike:". Found by the deep panelfuzz campaign 2026-07-13.
+// 0026 accepts a COHERENT re-based timeline after 2 consistent rejects: 0023's blind
+// 10-reject valve made the side panel's encoder restarts cost ~12s of dropped video
+// (~7s past the cache runway = user-visible freeze). A genuine re-base's rejected
+// samples advance in lockstep with system time; two coherent rejects re-anchor the 3rd
+// sample (~2.4s — inside the cache, zero visible outage). Marker "coherent new timeline".
+// 0027 applies ts.c's broken-stream pcroffset PER-PID: it was computed from one ES and
+// applied program-wide, so on muxes stamping audio/video bases minutes apart (fullent
+// coarse-avbase: audio dts = PCR-240s, video ≈ PCR, content interleaved in real time)
+// it pushed healthy video 240s into the future — frozen video, playing audio, all watch.
+// Now only a pid whose own dts is below the PCR gets lifted. Marker
+// "skywave-pcroffset-exempt". Both found by deep panelfuzz round 2, 2026-07-13.
 // URL + checksum track the release.
 let vlcBinary = Target.binaryTarget(
     name: "VLCKit",
-    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-21/VLCKit.xcframework.zip",
-    checksum: "6afc32b3a720e46b22fd3dd40cfa92f4fd5b95529046ca1eb9edee28bcf493fa"
+    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-23/VLCKit.xcframework.zip",
+    checksum: "4009affc8dffddd12fba788c80671dfda410fff81d5396883a19445659ec6125"
 )
 
 let package = Package(
