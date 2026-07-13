@@ -59,11 +59,21 @@ import PackageDescription
 // it pushed healthy video 240s into the future — frozen video, playing audio, all watch.
 // Now only a pid whose own dts is below the PCR gets lifted. Marker
 // "skywave-pcroffset-exempt". Both found by deep panelfuzz round 2, 2026-07-13.
+// 0028 fixes the fullent HLS frozen-video class (6 channels wedged ~10s in, audio playing
+// on, while raw TS played clean — found by the first HLS-transport panelfuzz round):
+// (a) ts.c drops a garbage ~0x1FFFFFFFF FIRST PCR (the same 33-bit-max transcoder
+// signature as the side/trex mid-stream spikes — 4th panel confirmed) that otherwise
+// poisons the era and forces stock VLC's +26h pcroffset kludge; (b) FakeESOut's
+// force-playlist (0015) jump test/re-anchor target now uses an all-outputs high-water
+// (fp_last_any) so a PCR-STARVED mux (~1 PCR per 10s segment) can't spuriously re-anchor
+// the next segment backward onto already-played time. Backward test stays vs the
+// PCR-only mark (per-ES re-anchor runaway stays fixed). Markers: "skywave-ts-pcr-spike:
+// dropping near-max FIRST PCR". Deterministic fixture: streamlab dailyshow-hls-wedge.
 // URL + checksum track the release.
 let vlcBinary = Target.binaryTarget(
     name: "VLCKit",
-    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-23/VLCKit.xcframework.zip",
-    checksum: "4009affc8dffddd12fba788c80671dfda410fff81d5396883a19445659ec6125"
+    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-24/VLCKit.xcframework.zip",
+    checksum: "3513a75e0e1dfcb4cfdcf5170fce0a3d77b0e641ad4be23f4fbd775799688fca"
 )
 
 let package = Package(
