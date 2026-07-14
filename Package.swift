@@ -69,6 +69,12 @@ import PackageDescription
 // the next segment backward onto already-played time. Backward test stays vs the
 // PCR-only mark (per-ES re-anchor runaway stays fixed). Markers: "skywave-ts-pcr-spike:
 // dropping near-max FIRST PCR". Deterministic fixture: streamlab dailyshow-hls-wedge.
+// 0029 extends 0028's first-PCR guard to drop the whole LEADING near-max ramp at open
+// (some transcoders emit ~9 ceiling PCRs 95443.0->95443.7 before resetting to 0, not a
+// single spike): 0028's one-shot drop let the 2nd ramp sample latch the garbage
+// reference, and the broken-stream pcroffset pushed VIDEO 26h into the future — froze
+// video at the initial GOP (audio playing on) on 20+ fullent loop channels over raw TS.
+// Drops the whole ramp (capped 16). Fixture streamlab fullent/pcr-ceiling-ramp.
 // URL + checksum track the release.
 let vlcBinary = Target.binaryTarget(
     name: "VLCKit",
