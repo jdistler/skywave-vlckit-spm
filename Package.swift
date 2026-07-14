@@ -74,12 +74,14 @@ import PackageDescription
 // single spike): 0028's one-shot drop let the 2nd ramp sample latch the garbage
 // reference, and the broken-stream pcroffset pushed VIDEO 26h into the future — froze
 // video at the initial GOP (audio playing on) on 20+ fullent loop channels over raw TS.
-// Drops the whole ramp (capped 16). Fixture streamlab fullent/pcr-ceiling-ramp.
+// Drops the whole ramp (capped 64 — the patch audit population-scanned 120 captures:
+// ramps run to 18, and freeze-vs-survive on a partial drop is PES-interleaving luck).
+// Fixture streamlab fullent/pcr-ceiling-ramp (the proven-freezing capture).
 // URL + checksum track the release.
 let vlcBinary = Target.binaryTarget(
     name: "VLCKit",
-    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-25/VLCKit.xcframework.zip",
-    checksum: "156fc4875f943ad33a53621ec8f6e891914bf583e8b53537b66f776d156b6d00"
+    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-26/VLCKit.xcframework.zip",
+    checksum: "51dcc720ed643669c93ddabd84084b4b09214f31b88e7dbec82dd20c8e4dd614"
 )
 
 let package = Package(
