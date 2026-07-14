@@ -72,8 +72,8 @@ import PackageDescription
 // URL + checksum track the release.
 let vlcBinary = Target.binaryTarget(
     name: "VLCKit",
-    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-24/VLCKit.xcframework.zip",
-    checksum: "3513a75e0e1dfcb4cfdcf5170fce0a3d77b0e641ad4be23f4fbd775799688fca"
+    url: "https://github.com/jdistler/skywave-vlckit/releases/download/patched-25/VLCKit.xcframework.zip",
+    checksum: "156fc4875f943ad33a53621ec8f6e891914bf583e8b53537b66f776d156b6d00"
 )
 
 let package = Package(
